@@ -86,4 +86,4 @@ if user_name in registration_dict.keys():
     else:
         print("Unregistered user, terminating the program..")
 else:
-    print("Unregistered user, terminating the program!")
+    print("Unregistered user, terminating the program..")
