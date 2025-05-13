@@ -1,4 +1,5 @@
 import string
+import sys
 
 TEXTS = [
     '''Situated about 10 miles west of Kemmerer,
@@ -50,48 +51,46 @@ if user_name in registration_dict.keys():
     if user_password == registration_dict[user_name]:
         print(f"Welcome to the app, {user_name}.\nWe have {len(TEXTS)} texts to be analysed.")
         print(separator)
-
-        try:
-            user_text = int(input(f"Enter a number btw. 1 and {len(TEXTS)} to select:\n")) - 1
-
-            if user_text not in range(0, len(TEXTS)):
-                print("The number is out of range.")
-            else:
-                analyse_text = TEXTS[user_text]
-                analyse_text_list = analyse_text.split()
-                analyse_text_list_numbers = []
-                analyse_text_dict = {}
-
-                number_word = 0
-                number_titlecase = 0
-                number_uppercase = 0
-                number_lowercase = 0
-                number_numeric = 0
-                print(separator)
-                for word in analyse_text_list:
-                    translator = str.maketrans("", "", string.punctuation)
-                    word = word.translate(translator)
-                    number_word += 1
-                    analyse_text_dict[len(word)] = analyse_text_dict.get(len(word), 0) +1
-
-                    if word.istitle() == True:
-                        number_titlecase += 1
-                    if word.isupper() == True:
-                        number_uppercase += 1
-                    if word.islower() == True:
-                        number_lowercase += 1
-                    if word.isnumeric() == True:
-                        number_numeric += 1
-                        analyse_text_list_numbers.append(int(word))
-
-                print(f'''There are {number_word} words in the selected text.\nThere are {number_titlecase} titlecase words.\nThere are {number_uppercase} uppercase words.\nThere are {number_lowercase} lowercase words.\nThere are {number_numeric} numeric strings.\nThe sum of all the numbers {sum(analyse_text_list_numbers)}\n{separator}\n{"LEN|": >3}{"OCCURENCES": ^18}{"|NR.": <3}\n{separator}''')
-                for key in sorted(analyse_text_dict):
-                    print(f"{key: >3}|{'*' * analyse_text_dict.get(key): <18}|{analyse_text_dict.get(key): <3}")
-
-        except ValueError:
-            print("The entry isn´t a number.")
-
     else:
-        print("Unregistered user, terminating the program..")
+        sys.exit("Unregistered user, terminating the program..")
 else:
-    print("Unregistered user, terminating the program..")
+    sys.exit("Unregistered user, terminating the program..")
+
+try:
+    user_text = int(input(f"Enter a number btw. 1 and {len(TEXTS)} to select:\n")) - 1
+except ValueError:
+    print("The entry isn´t a number.")
+
+if user_text not in range(0, len(TEXTS)):
+    print("The number is out of range.")
+else:
+    analyse_text = TEXTS[user_text]
+    analyse_text_list = analyse_text.split()
+    analyse_text_list_numbers = []
+    analyse_text_dict = {}
+
+    number_word = 0
+    number_titlecase = 0
+    number_uppercase = 0
+    number_lowercase = 0
+    number_numeric = 0
+    print(separator)
+    for word in analyse_text_list:
+        translator = str.maketrans("", "", string.punctuation)
+        word = word.translate(translator)
+        number_word += 1
+        analyse_text_dict[len(word)] = analyse_text_dict.get(len(word), 0) +1
+
+        if word.istitle() == True:
+            number_titlecase += 1
+        if word.isupper() == True:
+            number_uppercase += 1
+        if word.islower() == True:
+            number_lowercase += 1
+        if word.isnumeric() == True:
+            number_numeric += 1
+            analyse_text_list_numbers.append(int(word))
+
+    print(f'''There are {number_word} words in the selected text.\nThere are {number_titlecase} titlecase words.\nThere are {number_uppercase} uppercase words.\nThere are {number_lowercase} lowercase words.\nThere are {number_numeric} numeric strings.\nThe sum of all the numbers {sum(analyse_text_list_numbers)}\n{separator}\n{"LEN|": >3}{"OCCURENCES": ^18}{"|NR.": <3}\n{separator}''')
+    for key in sorted(analyse_text_dict):
+        print(f"{key: >3}|{'*' * analyse_text_dict.get(key): <18}|{analyse_text_dict.get(key): <3}")
